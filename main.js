@@ -2,11 +2,15 @@ const {app, BrowserWindow} = require('electron');
 const HID = require('node-hid');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const os = require('os');
 
 let mainWindow;
 let azeronDevice;
+// let azeronDeviceInfo;
 
 async function createWindow() {
+
+
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -26,19 +30,39 @@ async function createWindow() {
         mainWindow.webContents.openDevTools();
     }
 
+    //let devices = HID.devices();
+
     async function ConnectToAzeronCyborg() {
         // Initialize Azeron device
         try {
-            const vendorID = 0x16d0; // Replace with the actual vendor ID
-            const productID = 0x113c; // Replace with the actual product ID
-            azeronDevice = await HID.HIDAsync.open(vendorID, productID);
+
+            // {
+            //     hidProductId: 4412,
+            //     hidVendorId: 5840,
+            //     hidUsage: 257,
+            //     hidUsagePage: 65281,
+            //     name: "Cyborg",
+            //     keypadType: Ut.CyborgTansy
+            // }
+
+            //CyborgTansy
+            const vendorId = 5840; // Replace with the actual vendor ID
+            const productId = 4412; // Replace with the actual product ID
+
+            // let isAzeronDevice = function (d) {
+            //     let found = d.vendorId === vendorId && d.productId === productId && d.manufacturer === 'Azeron LTD';
+            //     if(found)
+            //         console.log('Found Device', JSON.stringify(d));
+            //     return found;
+            // }
+
+            azeronDevice = await HID.HIDAsync.open(vendorId, productId);
 
             if (azeronDevice) {
-                console.log('Azeron Connected!');
-                console.log(azeronDevice.getDeviceInfo());
+                console.log('Azeron Connected!', JSON.stringify(azeronDevice));
 
                 azeronDevice.on('data', (data) => {
-                    console.log('Data from Azeron:', data);
+                    interpretKeyboardData(data);
                     // Send data to React app (renderer process)
                     mainWindow.webContents.send('azeron-data', data);
                 });
@@ -56,7 +80,15 @@ async function createWindow() {
 
         } catch (error) {
             console.error('Failed to connect to Azeron device:', error);
-            await ConnectToAzeronCyborg();
+        }
+    }
+
+    function interpretKeyboardData(data) {
+        let hexData = data.toString('hex').trim();
+        const expectedHexString = "000000000f20800002080000".toLowerCase();
+
+        if(hexData.toLowerCase() !== expectedHexString) {
+            console.log('Data of type from Azeron:', typeof hexData);
         }
     }
 
@@ -66,6 +98,7 @@ async function createWindow() {
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
+    azeronDevice.close();
     if (process.platform !== 'darwin') {
         app.quit();
     }
