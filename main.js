@@ -2,7 +2,6 @@ const {app, globalShortcut, BrowserWindow} = require('electron');
 const HID = require('node-hid');
 const path = require('path');
 const isDev = require('electron-is-dev');
-const os = require('os');
 
 
 let mainWindow;
@@ -10,13 +9,13 @@ let azeronDevice;
 
 async function createWindow() {
 
-
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false, // Required for IPC
+            contextIsolation: false,
         },
     });
 
@@ -26,9 +25,9 @@ async function createWindow() {
             : `file://${path.join(__dirname, 'react-app/build/index.html')}`
     );
 
-    if (isDev) {
-        mainWindow.webContents.openDevTools();
-    }
+    // if (isDev) {
+    //     mainWindow.webContents.openDevTools();
+    // }
 
     // let devices = HID.devices();
     async function ConnectToAzeronCyborg() {
@@ -135,7 +134,7 @@ async function createWindow() {
                     break;
             }
 
-            console.log(`Azeron Key #${switchId} Pressed: ${eventType} ${switchType === "JOY" ? `X:${joystickX} Y:${joystickY}` : ''}` );
+            //console.log(`Azeron Key #${switchId} Pressed: ${eventType} ${switchType === "JOY" ? `X:${joystickX} Y:${joystickY}` : ''}` );
 
          return {
              id: switchId,
