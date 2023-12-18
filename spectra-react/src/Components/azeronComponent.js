@@ -33,8 +33,8 @@ function AzeronComponent() {
                 <header className="flex justify-between items-center p-2">
                     <div className="grid grid-cols-2 gap-2">
                         {/*Profiles*/}
-                        <Button variant="primary">Tarkov</Button>
-                        <Button variant="secondary">CoD</Button>
+                        <Button variant="primary">Profile #1</Button>
+                        <Button variant="secondary">Profile #2</Button>
                     </div>
                     <h1 className="text-2xl">Azeron Cyborg</h1>
                     <div></div>
