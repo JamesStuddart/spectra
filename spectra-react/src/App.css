@@ -1,3 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this to your CSS file */
+@keyframes fadeOut {
+  from { background-color: #d18bff; }
+  to { background-color: #9333ea; } /* Replace with the actual default background color */
+}
+
+.highlighted-key {
+  animation: fadeOut 0.5s forwards;
+}
+
+
 .App {
   text-align: center;
 }

@@ -11,8 +11,9 @@ async function createWindow() {
 
     mainWindow = new BrowserWindow({
         width: 800,
-        height: 600,
-        frame: false,
+        height: 800,
+        titleBarStyle: 'hiddenInset',
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
@@ -111,8 +112,8 @@ async function createWindow() {
             const asciiValue = hexToAscii(hexData)
             const dataParts = asciiValue.split('_');
 
-            // BP: button press
-            // BR: button release
+            // BP: buttonjs press
+            // BR: buttonjs release
             // JOY: thumbstick
             const switchType = dataParts[0];
             const switchId = parseInt(dataParts[1]);
