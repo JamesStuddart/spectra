@@ -4,9 +4,12 @@ function Joystick({ children, footer })
 {
     return (
         <div className="joystick bg-purple-600 rounded inline-block relative cursor-pointer p-1">
-            <span className="text-xs">Keyboard Joystick</span>
-            <div className="flex items-center justify-center text-xs m-1 p-2 pt-6">
+            <div className="relative -top-1 -left-1 flex items-center justify-center text-xs m-1 p-2 pt-6">
+               Keyboard Joystick
                 {children}
+            </div>
+            <div className=" pt-32">
+
             </div>
             {footer && (
                 <div
